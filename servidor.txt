@@ -1,0 +1,33 @@
+capa mas baja: repositorio
+retos productos jdbc
+
+generic repository no hace falta añadir nada
+fabricante repository (interface): dos nuevas querys, añadir dos metodos
+la clase que implementa la interface FabricanteRepJdbc, implementar los metodos nuevos override
+ //copiar find all como referencia y adaptarlo
+        //copiar la query (select) del enunciado
+    despejar incognita, posicion de la interrogracion en este caso nombre
+    try catch con result set y editar el mensaje de error
+    quitar return false
+
+ahora el servicio, capa de persistencia.
+metodo spublicos del servicio para que el controlador pueda utilizarlos
+ampliar funcionalidad, primero capa crear
+crear excepcion runtime throw y la añades en global exception handler
+si en el formulario escribes un dub¡plicado al guardar que aparezca un mensaje que no puedes añadirlo en el propio formulario
+
+ahora controlador del fabricante, al endpoint que crea el fabricante en el post a la hora de guardar controlar si esta duplicado.
+ cambiar para que fabricante trabaje con dto, en controller new fabricante dto en nuevo y guardar. hacer mapeo en fabricante dto lo copia de producto pero cambia cosas y pone static.
+
+ en fabricante controller,cambiar fabricante a fabricantedto y poner to model entity en guardar y actualizar. al igual que en producto controller utiliza el dto
+
+ en fabricante/formulario ya no trabajo con fabricante si no fabricante dtp
+  cambiar objeto en la vista a fabricanteDto
+
+  cuando se crea o actualiza como no usamos global exeption handler meter en fabricante controller try catch con la exception duplicado
+
+  cambia en la vista fabricanteDTo en el h2
+
+  si los fields de la vista aparecen en rojo no coincide el nombre en el controlador
+
+  service a la hora decrear
