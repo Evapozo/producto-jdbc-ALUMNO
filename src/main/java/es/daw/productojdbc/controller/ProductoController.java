@@ -28,13 +28,11 @@ public class ProductoController {
 //    }
 
     // READ: listado
-    //RETO 2.......................................................................
-//    @GetMapping
-//    public String listar(Model model) {
-////        model.addAttribute("productos", productoService.listar());
-//        model.addAttribute("productos", productoService.findByFabricanteCodigo());
-//        return "productos/lista";
-//    }
+    @GetMapping
+    public String listar(Model model) {
+        model.addAttribute("productos", productoService.listar());
+        return "productos/lista";
+    }
 
     // (aquí irán los métodos de los pasos 12 y 13)
 

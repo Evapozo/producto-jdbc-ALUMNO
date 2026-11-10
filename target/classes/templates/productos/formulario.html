@@ -8,11 +8,11 @@
 
     <!-- Mismo formulario para alta y edición: lo distingue si hay código -->
     <h2 class="titulo-seccion mb-4"
-        th:text="${productoDto.codigo == null} ? 'Nuevo producto' : ('Editar producto ' + ${productoDto.codigo})">
+        th:text="${productoForm.codigo == null} ? 'Nuevo producto' : ('Editar producto ' + ${productoForm.codigo})">
         Producto
     </h2>
 
-    <form th:action="@{/productos/guardar}" th:object="${productoDto}" method="post"
+    <form th:action="@{/productos/guardar}" th:object="${productoForm}" method="post"
           class="card card-body shadow-sm" novalidate>
 
         <!-- El código viaja oculto: vacío en alta, relleno en edición -->
