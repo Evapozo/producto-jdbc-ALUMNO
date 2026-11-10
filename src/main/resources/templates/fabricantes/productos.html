@@ -11,6 +11,7 @@
         <h2 class="text-success">
             <!-- El fabricante llega aparte en el modelo: si no tiene productos, también hay título -->
             🏭 <span th:text="${fabricante.nombre}">Fabricante</span>
+            <!--aqui sutituir las ??? en th:text-->
             <!-- |...| es sustitución literal: mezcla texto y expresiones sin concatenar con + -->
             <small class="text-muted fs-5" th:text="|(${#lists.size(productos)} productos)|">(0 productos)</small>
         </h2>
@@ -33,9 +34,11 @@
         <tr th:if="${#lists.isEmpty(productos)}">
             <td colspan="3" class="text-center text-muted">Este fabricante no tiene productos</td>
         </tr>
+        <!--aqui sutituir las ??? en th:text-->
         <tr th:each="p : ${productos}">
             <td th:text="${p.codigo}">1</td>
             <td th:text="${p.nombre}">Nombre</td>
+            <!--1 cifra entera, dos decimales y el punto (POINT, COMMA, DEFAULT (locales del navegador)-->
             <td th:text="${#numbers.formatDecimal(p.precio, 1, 2, 'POINT')}">0.00</td>
         </tr>
         </tbody>

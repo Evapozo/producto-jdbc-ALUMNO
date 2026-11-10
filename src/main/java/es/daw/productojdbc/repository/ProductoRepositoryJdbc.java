@@ -23,7 +23,7 @@ public class ProductoRepositoryJdbc implements ProductoRepository {
      * Los alias (f_codigo, f_nombre) evitan la ambigüedad: las dos tablas tienen "codigo" y "nombre".
      */
     private static final String SELECT_BASE = """
-            SELECT p.codigo, p.nombre, p.precio,
+            SELECT p.codigo, p.nombre, p.precio, p.stock,
                    f.codigo AS f_codigo, f.nombre AS f_nombre
             FROM producto p
             JOIN fabricante f ON p.codigo_fabricante = f.codigo
@@ -89,15 +89,16 @@ public class ProductoRepositoryJdbc implements ProductoRepository {
         return productos;
     }
 
-    // ---------------------------------------------------------------- CREATE
+    // ---------------------------------------------------------------- CREATE + reto4
     @Override
     public void save(Producto producto) {
-        String sql = "INSERT INTO producto (nombre, precio, codigo_fabricante) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO producto (nombre, precio, stock, codigo_fabricante) VALUES (?, ?, ?, ?)";
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, producto.getNombre());
             ps.setDouble(2, producto.getPrecio());
-            ps.setInt(3, producto.getFabricante().getCodigo());
+            ps.setInt(3, producto.getStock());
+            ps.setInt(4, producto.getFabricante().getCodigo());
             ps.executeUpdate();
 
             // Recuperamos el código que ha generado AUTO_INCREMENT y se lo asignamos al objeto
@@ -111,10 +112,10 @@ public class ProductoRepositoryJdbc implements ProductoRepository {
         }
     }
 
-    // ---------------------------------------------------------------- UPDATE
+    // ---------------------------------------------------------------- UPDATE + reto4
     @Override
     public void update(Producto producto) {
-        String sql = "UPDATE producto SET nombre = ?, precio = ?, codigo_fabricante = ? WHERE codigo = ?";
+        String sql = "UPDATE producto SET nombre = ?, precio = ?, stock = ?, codigo_fabricante = ? WHERE codigo = ?";
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, producto.getNombre());
@@ -155,13 +156,15 @@ public class ProductoRepositoryJdbc implements ProductoRepository {
                     "Error al comprobar los productos del fabricante " + codigoFabricante, e);
         }
     }
-//RETO 2
+//RETO 2 (utiliza findById para copiar y pegar)
     @Override
     public List<Producto> findByFabricanteCodigo(Integer codigoFabricante) {
         //los nombres de la consulta deben coincidir USA H2-CONSOLE o usar SELECT_BASE
+        //p.codigo_fabricante o:
         String sql = SELECT_BASE + " WHERE f.codigo = ?";
 
         List<Producto> productos = new ArrayList<>();
+
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, codigoFabricante);
@@ -188,6 +191,7 @@ public class ProductoRepositoryJdbc implements ProductoRepository {
                 rs.getInt("codigo"),
                 rs.getString("nombre"),
                 rs.getDouble("precio"),
+                rs.getInt("stock"),
                 fabricante);
     }
 }

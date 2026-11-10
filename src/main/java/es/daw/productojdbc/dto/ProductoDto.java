@@ -2,10 +2,7 @@ package es.daw.productojdbc.dto;
 
 import es.daw.productojdbc.model.Fabricante;
 import es.daw.productojdbc.model.Producto;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -33,17 +30,25 @@ public class ProductoDto {
     @NotNull(message = "Selecciona un fabricante")
     private Integer codigoFabricante;
 
+    @NotNull(message = "El stock es obligatorio")
+    @Positive
+    @Min(1)
+    @Max(value = 100, message="EL valor máximo de stock es 100")
+    private int stock;
 
 
 
 
-    // ----------- MAPEO ----------
+
+    // ----------- MAPEO ---------- VERSION ANTIGUA
+    // @Component metodos en Mappers
     /** Producto (modelo) → formulario (vista). Se usa al editar. */
     public static ProductoDto toDto(Producto p) {
         ProductoDto form = new ProductoDto();
         form.setCodigo(p.getCodigo());
         form.setNombre(p.getNombre());
         form.setPrecio(p.getPrecio());
+        form.setStock(p.getStock());
         form.setCodigoFabricante(p.getFabricante().getCodigo());
         return form;
     }
@@ -51,6 +56,6 @@ public class ProductoDto {
     /** Formulario (vista) → Producto (modelo). Del fabricante solo tenemos el código. */
     public Producto toModelEntity() {
         Fabricante fabricante = new Fabricante(codigoFabricante, null);
-        return new Producto(codigo, nombre, precio, fabricante);
+        return new Producto(codigo, nombre, precio, stock, fabricante);
     }
 }

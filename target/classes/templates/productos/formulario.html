@@ -32,6 +32,13 @@
             <div class="invalid-feedback" th:errors="*{precio}">Error</div>
         </div>
 
+        <div class="mb-3">
+            <label for="stock" class="form-label">Stock</label>
+            <input type="number" step="0.01" min="0" th:field="*{stock}" class="form-control"
+                   th:classappend="${#fields.hasErrors('stock')} ? 'is-invalid'">
+            <div class="invalid-feedback" th:errors="*{stock}">Error</div>
+        </div>
+
         <div class="mb-4">
             <label for="codigoFabricante" class="form-label">Fabricante</label>
             <!-- Se envía el CÓDIGO del fabricante; se muestra su NOMBRE -->
