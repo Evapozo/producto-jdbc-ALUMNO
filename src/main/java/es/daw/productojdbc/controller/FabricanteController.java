@@ -4,7 +4,9 @@ import es.daw.productojdbc.dto.FabricanteDto;
 import es.daw.productojdbc.exception.FabricanteConProductosException;
 import es.daw.productojdbc.exception.FabricanteDuplicadoException;
 import es.daw.productojdbc.model.Fabricante;
+import es.daw.productojdbc.model.Producto;
 import es.daw.productojdbc.service.FabricanteService;
+import es.daw.productojdbc.service.ProductoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,12 +15,16 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/fabricantes")
 @RequiredArgsConstructor //añade esto porque ha quitado el constructor
 public class FabricanteController {
 
     private final FabricanteService fabricanteService;
+    private final ProductoService productoService; //RETO 2
 //inyector por constructor el servicio
 //    public FabricanteController(FabricanteService fabricanteService) {
 //
@@ -35,6 +41,7 @@ public class FabricanteController {
 
     }
 
+
     @GetMapping("/nuevo")
     public String nuevo(Model model) {
         model.addAttribute("fabricanteDto", new FabricanteDto());
@@ -47,6 +54,27 @@ public class FabricanteController {
         //el servicio devulve un model lo que mando a la vista es un dto
         //lo qu erecogo un dto y voy convirtiendo un moelo en dto
         return "fabricantes/formulario";
+    }
+
+    //RETO 2
+    @GetMapping("/{codigo}/productos")
+    public String productosDelFabricante(@PathVariable Integer codigo, Model model) {
+        // 1. Recibir directamente el objeto Fabricante
+        Fabricante fabricante = fabricanteService.buscarPorCodigo(codigo);
+
+        // 2. Comprobar si es null (si el servicio devuelve null cuando no lo encuentra)
+        if (fabricante == null) {
+            return "redirect:/fabricantes";
+        }
+
+        // 3. Obtener los productos del fabricante
+        List<Producto> productos = productoService.findByFabricanteCodigo(codigo);
+
+        // 4. Pasar las variables al modelo (sin usar .get())
+        model.addAttribute("fabricante", fabricante);
+        model.addAttribute("productos", productos);
+
+        return "fabricantes/productos";
     }
 
     @PostMapping("/guardar")

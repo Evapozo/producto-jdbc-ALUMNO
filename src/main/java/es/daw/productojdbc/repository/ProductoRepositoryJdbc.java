@@ -158,8 +158,9 @@ public class ProductoRepositoryJdbc implements ProductoRepository {
 //RETO 2
     @Override
     public List<Producto> findByFabricanteCodigo(Integer codigoFabricante) {
+        //los nombres de la consulta deben coincidir USA H2-CONSOLE o usar SELECT_BASE
+        String sql = SELECT_BASE + " WHERE f.codigo = ?";
 
-        String sql = SELECT_BASE + "WHERE f.codigo = ?";
         List<Producto> productos = new ArrayList<>();
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {

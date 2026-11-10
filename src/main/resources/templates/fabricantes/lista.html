@@ -35,7 +35,11 @@
         </tr>
         <tr th:each="f : ${fabricantes}">
             <td th:text="${f.codigo}">1</td>
-            <td th:text="${f.nombre}">Nombre</td>
+<!--            <td th:text="${f.nombre}">Nombre</td>  RETO 2-->
+            <td>
+                <a th:href="@{/fabricantes/{codigo}/productos(codigo=${f.codigo})}"
+                   th:text="${f.nombre}">Nombre</a>
+            </td>
             <!--RETO 1  -->
             <td th:text="${f.numProductos}" th:classappend="${f.numProductos > 0} ? 'text-bg-primary':'text-bg-secondary'">Num Productos</td>
 

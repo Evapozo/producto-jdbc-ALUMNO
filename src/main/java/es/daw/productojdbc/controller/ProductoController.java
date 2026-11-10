@@ -84,9 +84,6 @@ public class ProductoController {
         return "redirect:/productos";
     }
 
-
-
-
     // DELETE: por POST, nunca por GET (un GET no debe modificar datos)
     @PostMapping("/borrar/{codigo}")
     public String borrar(@PathVariable Integer codigo,
