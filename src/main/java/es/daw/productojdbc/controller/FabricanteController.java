@@ -3,6 +3,7 @@ package es.daw.productojdbc.controller;
 import es.daw.productojdbc.dto.FabricanteDto;
 import es.daw.productojdbc.exception.FabricanteConProductosException;
 import es.daw.productojdbc.exception.FabricanteDuplicadoException;
+import es.daw.productojdbc.mapper.FabricanteMapper;
 import es.daw.productojdbc.model.Fabricante;
 import es.daw.productojdbc.model.Producto;
 import es.daw.productojdbc.service.FabricanteService;
@@ -22,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor //añade esto porque ha quitado el constructor
 public class FabricanteController {
 
+    private final FabricanteMapper fabricanteMapper; //necesita poner component
     private final FabricanteService fabricanteService;
     private final ProductoService productoService; //RETO 2
 //inyector por constructor el servicio
@@ -49,7 +51,7 @@ public class FabricanteController {
 
     @GetMapping("/editar/{codigo}")
     public String editar(@PathVariable Integer codigo, Model model) {
-        model.addAttribute("fabricanteDto", FabricanteDto.toDto(fabricanteService.buscarPorCodigo(codigo)));
+        model.addAttribute("fabricanteDto", fabricanteMapper.toDto(fabricanteService.buscarPorCodigo(codigo)));
         //el servicio devulve un model lo que mando a la vista es un dto
         //lo qu erecogo un dto y voy convirtiendo un moelo en dto
         return "fabricantes/formulario";
@@ -76,7 +78,7 @@ public class FabricanteController {
 
         return "fabricantes/productos";
     }
-
+    //RETO 3
     @PostMapping("/guardar")
     public String guardar(@Valid @ModelAttribute("fabricanteDto") FabricanteDto fabricanteDto, //se llamam igual en formulario
                           BindingResult result,
@@ -87,11 +89,11 @@ public class FabricanteController {
         }
         try {
             if (fabricanteDto.getCodigo() == null) {
-                Fabricante fabricante = fabricanteService.crear(fabricanteDto.toModelEntity(fabricanteDto));
+                Fabricante fabricante = fabricanteService.crear(fabricanteMapper.toModelEntity(fabricanteDto));
                 redirectAttributes.addFlashAttribute("mensaje",
-                        "Fabricante creado con código " + fabricanteDto.getCodigo());
+                        "Fabricante creado con código " + fabricante.getCodigo());
             } else {
-                Fabricante fabricante = fabricanteService.actualizar(fabricanteDto.toModelEntity(fabricanteDto));
+                Fabricante fabricante = fabricanteService.actualizar(fabricanteMapper.toModelEntity(fabricanteDto));
                 redirectAttributes.addFlashAttribute("mensaje",
                         "Fabricante " + fabricante.getCodigo() + " actualizado");
             }

@@ -15,18 +15,19 @@ public class FabricanteDto {
     @Size(max = 100, message = "Máximo 100 caracteres")
     private String nombre;
 
-    // ----------- MAPEO ----------
-    /** FAbricante (modelo) → formulario (vista). Se usa al editar. */
-    public static FabricanteDto toDto(Fabricante f) {
-      FabricanteDto fabricanteDto = new FabricanteDto();
-      fabricanteDto.setCodigo(f.getCodigo());
-      fabricanteDto.setNombre(f.getNombre());
-      return fabricanteDto;
-
-    }
-
-    /** Formulario (vista) → FAbricante (modelo). Del fabricante solo tenemos el código. */
-    public static Fabricante toModelEntity(FabricanteDto f) {
-        return new Fabricante(f.getCodigo(), f.getNombre());
-    }
+//    // ----------- MAPEO ----------
+//    /** FAbricante (modelo) → formulario (vista). Se usa al editar. */
+//    public static FabricanteDto toDto(Fabricante f) {
+//      FabricanteDto fabricanteDto = new FabricanteDto();
+//      fabricanteDto.setCodigo(f.getCodigo());
+//      fabricanteDto.setNombre(f.getNombre());
+//      return fabricanteDto;
+//
+//    }
+//
+//    /** Formulario (vista) → FAbricante (modelo). Del fabricante solo tenemos el código. */
+//    public static Fabricante toModelEntity(FabricanteDto f) {
+//
+//        return new Fabricante(f.getCodigo(), f.getNombre());
+//    }
 }

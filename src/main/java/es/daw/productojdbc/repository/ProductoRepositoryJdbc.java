@@ -120,8 +120,9 @@ public class ProductoRepositoryJdbc implements ProductoRepository {
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, producto.getNombre());
             ps.setDouble(2, producto.getPrecio());
-            ps.setInt(3, producto.getFabricante().getCodigo());
-            ps.setInt(4, producto.getCodigo());
+            ps.setInt(3, producto.getStock());
+            ps.setInt(4, producto.getFabricante().getCodigo());
+            ps.setInt(5, producto.getCodigo());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new AccesoDatosException("Error al actualizar el producto " + producto.getCodigo(), e);

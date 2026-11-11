@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * Objeto del formulario de producto (lo que viaja entre la vista y el controlador).
+ * Es el objeto que utilizas para recoger los datos del formulario HTML:
  *
  * ¿Por qué no usamos Producto directamente?
  * El <select> solo envía el código del fabricante (un número), no un Fabricante completo.
@@ -43,19 +44,19 @@ public class ProductoDto {
     // ----------- MAPEO ---------- VERSION ANTIGUA
     // @Component metodos en Mappers
     /** Producto (modelo) → formulario (vista). Se usa al editar. */
-    public static ProductoDto toDto(Producto p) {
-        ProductoDto form = new ProductoDto();
-        form.setCodigo(p.getCodigo());
-        form.setNombre(p.getNombre());
-        form.setPrecio(p.getPrecio());
-        form.setStock(p.getStock());
-        form.setCodigoFabricante(p.getFabricante().getCodigo());
-        return form;
-    }
-
-    /** Formulario (vista) → Producto (modelo). Del fabricante solo tenemos el código. */
-    public Producto toModelEntity() {
-        Fabricante fabricante = new Fabricante(codigoFabricante, null);
-        return new Producto(codigo, nombre, precio, stock, fabricante);
-    }
+//    public static ProductoDto toDto(Producto p) {
+//        ProductoDto form = new ProductoDto();
+//        form.setCodigo(p.getCodigo());
+//        form.setNombre(p.getNombre());
+//        form.setPrecio(p.getPrecio());
+//        form.setStock(p.getStock());
+//        form.setCodigoFabricante(p.getFabricante().getCodigo());
+//        return form;
+//    }
+//
+//    /** Formulario (vista) → Producto (modelo). Del fabricante solo tenemos el código. */
+//    public Producto toModelEntity() {
+//        Fabricante fabricante = new Fabricante(codigoFabricante, null);
+//        return new Producto(codigo, nombre, precio, stock, fabricante);
+//    }
 }

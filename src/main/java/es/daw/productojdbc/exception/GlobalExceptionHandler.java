@@ -42,5 +42,18 @@ public class GlobalExceptionHandler {
 //        model.addAttribute("titulo", "Error de base de datos");
 //        model.addAttribute("mensaje", ex.getMessage());
 //        return "error";
+//    import es.daw.productojdbc.exception.FabricanteDuplicadoException;
 //    }
+
+//   no hace falta porque en el controlador pone BindingResult
+//    @ExceptionHandler(FabricanteDuplicadoException.class)
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    public String fabricanteDuplicado(FabricanteDuplicadoException ex, Model model) {
+//
+//        model.addAttribute("titulo", "Fabricante duplicado");
+//        model.addAttribute("mensaje", ex.getMessage());
+//
+//        return "error";
+//    }
+
 }

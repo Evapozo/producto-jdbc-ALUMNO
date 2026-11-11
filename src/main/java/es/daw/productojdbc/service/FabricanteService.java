@@ -31,6 +31,7 @@ public class FabricanteService {
 
     //RETO 1.
     public List<FabricanteResumen> findAllWithNumProductos() {
+
         return fabricanteRepository.findAllWithNumProductos();
     }
     public Fabricante buscarPorCodigo(Integer codigo) {
@@ -47,7 +48,7 @@ public class FabricanteService {
         //NUEVA REGLA DE NEGOCIO: Nombre único
         //antes de crear el fabricante tengo que verificar que no existe ninguno con el mismo nombre
 
-        if (fabricanteRepository.existsByNombreIgnoreCaseAndCodigoNot(fabricante.getNombre(), fabricante.getCodigo())){
+        if (fabricanteRepository.existsByNombreIgnoreCase(fabricante.getNombre())){
             //lanzar excepción propia (crearla)
             throw new FabricanteDuplicadoException(fabricante.getNombre());
         }
@@ -57,13 +58,13 @@ public class FabricanteService {
     }
 
     public Fabricante actualizar(Fabricante fabricante) {
-        //REGLA DE NEGOCIO PARA BUSCAR EL CODIGO DE FABRICANTE, SI NO EXISTE...EXCEPCION
+        //regla de negocio para buscar el codigo de fabricante, si no existe -> exception
         buscarPorCodigo(fabricante.getCodigo());
-        //REGLA DE NEGOCIO PARA ELIMINAR ESPACIOS EN EL NOMBRE DEL FABRICANTE
+        // regla para eliminar espacios en el nombre del fabricante
         fabricante.setNombre(fabricante.getNombre().strip());
 
         //RETO 3
-        //NUEVA REGLA DE NEGOCIO: Nombre único
+        //Nueva regla de negocio: nombre unico
         //antes de crear el fabricante tengo que verificar que no existe ninguno con el mismo nombre
 
         if (fabricanteRepository.existsByNombreIgnoreCaseAndCodigoNot(fabricante.getNombre(), fabricante.getCodigo())){

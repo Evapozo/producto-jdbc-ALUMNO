@@ -1,6 +1,8 @@
 package es.daw.productojdbc.controller;
 
 import es.daw.productojdbc.dto.ProductoDto;
+import es.daw.productojdbc.mapper.FabricanteMapper;
+import es.daw.productojdbc.mapper.ProductoMapper;
 import es.daw.productojdbc.model.Producto;
 import es.daw.productojdbc.service.FabricanteService;
 import es.daw.productojdbc.service.ProductoService;
@@ -19,11 +21,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequiredArgsConstructor
 public class ProductoController {
 
+    private final FabricanteMapper fabricanteMapper;
     // El controlador solo conoce SERVICIOS, nunca repositorios
     private final ProductoService productoService;
     private final FabricanteService fabricanteService;
+    private final ProductoMapper productoMapper;
 
-//    public ProductoController(ProductoService productoService,
+    //    public ProductoController(ProductoService productoService,
 //                              FabricanteService fabricanteService) {
 //        this.productoService = productoService;
 //        this.fabricanteService = fabricanteService;
@@ -43,7 +47,7 @@ public class ProductoController {
     // Formulario vacío para alta le envia algo a la vista
     @GetMapping("/nuevo")
     public String nuevo(Model model) {
-        model.addAttribute("productoDto", new ProductoDto()); //se tiene que llamar igual que la vista
+        model.addAttribute("productoForm", new ProductoDto()); //se tiene que llamar igual que la vista
         model.addAttribute("fabricantes", fabricanteService.listar());
         return "productos/formulario";
     }
@@ -57,7 +61,7 @@ public class ProductoController {
         //debe devolver un producto con todos los atributos
         Producto producto = productoService.buscarPorCodigo(codigo);   // 404 si no existe
 
-        model.addAttribute("productoForm", ProductoDto.toDto(producto));
+        model.addAttribute("productoForm", productoMapper.toDto(producto));
         model.addAttribute("fabricantes", fabricanteService.listar());
         return "productos/formulario";
     }
@@ -76,11 +80,11 @@ public class ProductoController {
         }
 
         if (productoDto.getCodigo() == null) {
-            Producto creado = productoService.crear(productoDto.toModelEntity());
+            Producto creado = productoService.crear(productoMapper.toModelEntity(productoDto));
             redirectAttributes.addFlashAttribute("mensaje",
                     "Producto creado con código " + creado.getCodigo());
         } else {
-            productoService.actualizar(productoDto.toModelEntity());
+            productoService.actualizar(productoMapper.toModelEntity(productoDto));
             redirectAttributes.addFlashAttribute("mensaje",
                     "Producto " + productoDto.getCodigo() + " actualizado");
         }

@@ -107,7 +107,7 @@ public class FabricanteRepositoryJdbc implements FabricanteRepository {
     }
 
     @Override
-    public boolean existsByNombreFabricante(String nombre) {
+    public boolean existsByNombreIgnoreCase(String nombre) {
         //copiar find all como referencia y adaptarlo
         //copiar la query (select) del enunciado
         //si en bd tengo Asus y llega asus, devuelve true
@@ -126,15 +126,17 @@ public class FabricanteRepositoryJdbc implements FabricanteRepository {
         }
 
     }
-
+    // RETO 3
     @Override
-    public boolean existsByNombreIgnoreCaseAndCodigoNot(String nombre, Integer id) {
+    public boolean existsByNombreIgnoreCaseAndCodigoNot(String nombre, Integer codigo) {
         //copia el anterior y lo adaptas
         String sql = "SELECT 1 FROM fabricante WHERE LOWER(nombre) = LOWER(?) AND codigo <> ?";
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
+
             ps.setString(1, nombre);
-            ps.setInt(2, id); //id la profe lo llamo codigo
+            ps.setInt(2, codigo);
+
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next(); //TRUE si encuentra el fabricante con ese nombre
             }
@@ -142,6 +144,7 @@ public class FabricanteRepositoryJdbc implements FabricanteRepository {
             throw new AccesoDatosException("Error al comprobar el nombre del fabricante " + nombre, e);
         }
     }
+
     //RETO 1.
     @Override
     public List<FabricanteResumen> findAllWithNumProductos() {
@@ -160,6 +163,8 @@ public class FabricanteRepositoryJdbc implements FabricanteRepository {
                 fabricantes.add(new FabricanteResumen(
                         rs.getInt("codigo"),
                         rs.getString("nombre"),
+                        //recoge el resultado del count y lo guarda en el atributo
+                        //num_productos de dto
                         rs.getInt("num_productos")
                 ));
             }

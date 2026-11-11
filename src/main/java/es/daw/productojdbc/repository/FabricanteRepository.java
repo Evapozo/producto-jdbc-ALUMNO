@@ -8,7 +8,7 @@ import java.util.List;
 public interface FabricanteRepository extends GenericRepository<Fabricante, Integer> {
 
     //RETO 3
-    public abstract boolean existsByNombreFabricante(String nombre);
+    boolean existsByNombreIgnoreCase(String nombre);
     boolean existsByNombreIgnoreCaseAndCodigoNot(String nombre, Integer id);
 
     //RETO 1
