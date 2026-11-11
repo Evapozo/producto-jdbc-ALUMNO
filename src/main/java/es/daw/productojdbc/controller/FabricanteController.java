@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/fabricantes")
@@ -58,8 +57,9 @@ public class FabricanteController {
 
     //RETO 2
     @GetMapping("/{codigo}/productos")
+    //nomenclatura explicita PathVariable("codigo")
     public String productosDelFabricante(@PathVariable Integer codigo, Model model) {
-        // 1. Recibir directamente el objeto Fabricante
+        // 1. Recibir directamente el objeto Fabricante (manda a la vista el objeto completo)
         Fabricante fabricante = fabricanteService.buscarPorCodigo(codigo);
 
         // 2. Comprobar si es null (si el servicio devuelve null cuando no lo encuentra)

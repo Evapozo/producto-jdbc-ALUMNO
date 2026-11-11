@@ -6,6 +6,8 @@ import es.daw.productojdbc.service.FabricanteService;
 import es.daw.productojdbc.service.ProductoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,8 +28,10 @@ public class ProductoController {
 //        this.productoService = productoService;
 //        this.fabricanteService = fabricanteService;
 //    }
-
+    //fallaba el guardado
+    Logger logger = LoggerFactory.getLogger(ProductoController.class);
     // READ: listado
+
     @GetMapping
     public String listar(Model model) {
         model.addAttribute("productos", productoService.listar());
@@ -45,9 +49,12 @@ public class ProductoController {
     }
 
     // Formulario relleno para edición
+    //endpoint que llama al formulario para pintar todos los datos del producto
     @GetMapping("/editar/{codigo}")
     public String editar(@PathVariable("codigo") Integer codigo, Model model) {
 
+        logger.debug("editando producto {}", codigo);
+        //debe devolver un producto con todos los atributos
         Producto producto = productoService.buscarPorCodigo(codigo);   // 404 si no existe
 
         model.addAttribute("productoForm", ProductoDto.toDto(producto));

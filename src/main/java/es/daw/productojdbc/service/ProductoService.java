@@ -80,8 +80,11 @@ public class ProductoService {
         producto.setFabricante(fabricante);   // ahora lleva también el nombre
     }
 
-    //RETO 2.
+    //RETO 2. lo he llamado igual que el mét. del repository
     public List<Producto> findByFabricanteCodigo(Integer codigoFabricante){
+        //regla de negocio: comprobar que el codigo Fabricante existe
+        fabricanteRepository.findById(codigoFabricante).orElseThrow(
+                () -> new RecursoNoEncontradoException("No existe el fabricante " + codigoFabricante));
         return productoRepository.findByFabricanteCodigo(codigoFabricante);
     }
 }
